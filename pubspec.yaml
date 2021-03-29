@@ -21,7 +21,6 @@ dependencies:
   connectivity:
   http:
   shared_preferences:
-  flutter_clean_architecture:
 
 
 dev_dependencies:
