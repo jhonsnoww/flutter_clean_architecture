@@ -12,7 +12,7 @@ class GetRamdomNumberTrivia implements UseCase<NumberTrivia, NoParams> {
 
   @override
   Future<Either<Failures, NumberTrivia>> call(NoParams params) async {
-    return await reqpository.getRamdomNumberTrivia();
+    return await reqpository.getRandomNumberTrivia();
   }
 }
 

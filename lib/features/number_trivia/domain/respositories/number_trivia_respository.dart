@@ -5,5 +5,5 @@ import '../entities/number_trivia.dart';
 
 abstract class NumberTriviaReqpository {
   Future<Either<Failures, NumberTrivia>> getConcreteNumberTrivia(int number);
-  Future<Either<Failures, NumberTrivia>> getRamdomNumberTrivia();
+  Future<Either<Failures, NumberTrivia>> getRandomNumberTrivia();
 }
