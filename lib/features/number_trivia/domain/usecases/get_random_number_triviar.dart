@@ -5,10 +5,10 @@ import '../../../../core/usecases/usecase.dart';
 import '../entities/number_trivia.dart';
 import '../respositories/number_trivia_respository.dart';
 
-class GetRamdomNumberTrivia implements UseCase<NumberTrivia, NoParams> {
+class GetRandomNumberTrivia implements UseCase<NumberTrivia, NoParams> {
   final NumberTriviaReqpository reqpository;
 
-  GetRamdomNumberTrivia(this.reqpository);
+  GetRandomNumberTrivia(this.reqpository);
 
   @override
   Future<Either<Failures, NumberTrivia>> call(NoParams params) async {
