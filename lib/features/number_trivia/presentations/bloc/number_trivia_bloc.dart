@@ -11,6 +11,11 @@ import 'package:flutter/cupertino.dart';
 part 'number_trivia_event.dart';
 part 'number_trivia_state.dart';
 
+const String SERVER_FAILURE_MESSAGE = "Server Faild";
+const String CACHE_FAILURE_MESSAGE = "Cache Faild";
+const String INPUT_FAILURE_MESSAGE =
+    "Invalid Input String - the number must be positive number or zero";
+
 class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
   final GetConcreteNumberTrivia concreteNumberTrivia;
   final GetRandomNumberTrivia randomNumberTrivia;
@@ -26,8 +31,22 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
         randomNumberTrivia = random,
         super(Empty());
 
+  NumberTriviaState get initialState => Empty();
+
   @override
   Stream<NumberTriviaState> mapEventToState(
     NumberTriviaEvent event,
-  ) async* {}
+  ) async* {
+    if (event is GetTriviaForConcreteNumber) {
+      final inputEither =
+          inputConverter.stringToUnsignedInteger(event.numberString);
+
+      if (inputEither.isLeft())
+        yield* inputEither.fold((failure) async* {
+          yield Error(message: INPUT_FAILURE_MESSAGE);
+        }, (r) {
+          return;
+        });
+    }
+  }
 }
