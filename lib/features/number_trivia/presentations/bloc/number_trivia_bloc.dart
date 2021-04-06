@@ -41,12 +41,15 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
       final inputEither =
           inputConverter.stringToUnsignedInteger(event.numberString);
 
-      if (inputEither.isLeft())
-        yield* inputEither.fold((failure) async* {
-          yield Error(message: INPUT_FAILURE_MESSAGE);
-        }, (r) {
-          return;
-        });
+      //  if (inputEither.isLeft())
+      yield* inputEither.fold((failure) async* {
+        yield Error(message: INPUT_FAILURE_MESSAGE);
+      }, (r) async* {
+        yield Loading();
+
+        final failureOrTrivia =await concreteNumberTrivia(Params(r));
+        failureOrTrivia.fold((l) => null, (r) => null)
+      });
     }
   }
 }

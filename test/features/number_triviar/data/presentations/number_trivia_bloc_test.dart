@@ -39,22 +39,50 @@ void main() {
     final tNumberParsed = 1;
     final tNumberTrivia = NumberTrivia(number: 1, text: 'test numberTrivia');
 
+    void setUpMockInputConverterSuccess() {
+      when(inputConverter.stringToUnsignedInteger(any))
+          .thenReturn(Right(tNumberParsed));
+    }
+
     test(
         'should call the InputConverter to validate and convert the string to UnsignedInteger',
         () async {
-      when(inputConverter.stringToUnsignedInteger(tNumberString))
-          .thenReturn(Right(tNumberParsed));
+      setUpMockInputConverterSuccess();
       bloc.add(GetTriviaForConcreteNumber(tNumberString));
 
       await untilCalled(inputConverter.stringToUnsignedInteger(tNumberString));
       verify(inputConverter.stringToUnsignedInteger(tNumberString));
     });
 
-    test('should emit [Error] when the input is invalid', () async*{
+    test('should emit [Error] when the input is invalid', () async* {
       when(inputConverter.stringToUnsignedInteger(tNumberString))
           .thenReturn(Left(InvalidInputFailure()));
 
       final expected = [Empty(), Error(message: INPUT_FAILURE_MESSAGE)];
+      expectLater(
+        bloc,
+        emitsInOrder(expected),
+      );
+      bloc.add(GetTriviaForConcreteNumber(tNumberString));
+    });
+
+    test('should get data from the concrete use case', () async {
+      setUpMockInputConverterSuccess();
+      when(mockGetConcreteNumberTrivia(any))
+          .thenAnswer((_) async => Right(tNumberTrivia));
+
+      bloc.add(GetTriviaForConcreteNumber(tNumberString));
+      await untilCalled(mockGetConcreteNumberTrivia(any));
+      verify(mockGetConcreteNumberTrivia(Params(tNumberParsed)));
+    });
+
+    test('should emit [Loading , Loaded ] when data is gotten successfull', () {
+      setUpMockInputConverterSuccess();
+      when(mockGetConcreteNumberTrivia(any))
+          .thenAnswer((_) async => Right(tNumberTrivia));
+
+      final expected = [Empty(), Loading(), Loaded(trivia: tNumberTrivia)];
+
       expectLater(
         bloc,
         emitsInOrder(expected),
