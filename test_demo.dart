@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-class TestA extends Equatable {
+abstract class ComeOn {}
+
+class TestA extends Equatable implements ComeOn {
   final String name;
   final String email;
 
@@ -10,9 +12,15 @@ class TestA extends Equatable {
   List<Object> get props => [name, email];
 }
 
-main() {
-  final testA = TestA("name", "email");
-  final testB = TestA("name", "email");
+class TestB extends Equatable implements ComeOn {
+  @override
+  List<Object> get props => [];
+}
 
-  print(testA == testB);
+main() {
+  ComeOn testA = TestA("name", "email");
+  ComeOn testAA = TestA("name", "emaill");
+  final testB = TestB();
+
+  print(testA is TestA);
 }
