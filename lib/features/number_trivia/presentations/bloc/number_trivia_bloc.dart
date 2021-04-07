@@ -41,6 +41,7 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
     NumberTriviaEvent event,
   ) async* {
     if (event is GetTriviaForConcreteNumber) {
+      print("Hello Search!");
       final inputEither =
           inputConverter.stringToUnsignedInteger(event.numberString);
 

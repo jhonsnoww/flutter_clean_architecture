@@ -26,6 +26,7 @@ class NumberTriviaRemoteDataSourceImpl implements NumberTriviaRemoteDataSource {
       _getTriviaFromUrl("http://numbersapi.com/random");
 
   Future<NumberTrivia> _getTriviaFromUrl(String url) async {
+    print("Url ::: $url");
     final response = await client
         .get(Uri.parse(url), headers: {'Content-Type': 'application/json'});
 
