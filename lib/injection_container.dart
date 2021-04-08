@@ -15,10 +15,6 @@ import 'features/number_trivia/data/datasource/number_trivia_local_data_source.d
 
 final sl = GetIt.instance;
 Future<void> init() async {
-  await initFeature();
-}
-
-Future<void> initFeature() async {
   sl.registerFactory(() =>
       NumberTriviaBloc(concrete: sl(), random: sl(), inputConverter: sl()));
 

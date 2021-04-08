@@ -17,7 +17,7 @@ class NumberTriviaPage extends StatelessWidget {
         body: buildBody(context));
   }
 
-  Widget buildBody(BuildContext context) {
+  BlocProvider<NumberTriviaBloc> buildBody(BuildContext context) {
     return BlocProvider(
       create: (context) => sl<NumberTriviaBloc>(),
       child: Padding(
@@ -30,16 +30,18 @@ class NumberTriviaPage extends StatelessWidget {
             Container(
               height: MediaQuery.of(context).size.height * 0.3,
               child: BlocBuilder<NumberTriviaBloc, NumberTriviaState>(
-                builder: (context, state) {
+                builder: (c, state) {
+                
                   if (state is Empty) {
                     return MessageDisplay(message: "Start Searching!");
-                  } else if (state is Error) {
-                    return MessageDisplay(message: state.message);
-                  } else if (state is Loaded) {
-                    return TriviaDisplay(trivia: state.trivia);
                   } else if (state is Loading) {
                     return LoadingDisplay();
-                  }
+                  } else if (state is Loaded) {
+                    return TriviaDisplay(trivia: state.trivia);
+                  } else if (state is Error) {
+                    return MessageDisplay(message: state.message);
+                  } else
+                    return MessageDisplay(message: "SomeThing was Wrong");
                 },
               ),
             ),
@@ -62,7 +64,7 @@ class NumberTriviaPage extends StatelessWidget {
                 Expanded(
                     child: ElevatedButton(
                   onPressed: () {
-                    dispatchConcreteNumber(context);
+                    searchConcreteNumber(context);
                   },
                   child: Text("Search"),
                 )),
@@ -71,7 +73,9 @@ class NumberTriviaPage extends StatelessWidget {
                 ),
                 Expanded(
                     child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    searchRandomNumber(context);
+                  },
                   child: Text("Get Random Trivia"),
                 ))
               ],
@@ -82,8 +86,14 @@ class NumberTriviaPage extends StatelessWidget {
     );
   }
 
-  void dispatchConcreteNumber(BuildContext context) {
+  void searchConcreteNumber(context) {
+    // sl.get<NumberTriviaBloc>().add(GetTriviaForConcreteNumber(inputString));
     BlocProvider.of<NumberTriviaBloc>(context)
         .add(GetTriviaForConcreteNumber(inputString));
+  }
+
+  void searchRandomNumber(context) {
+     sl.get<NumberTriviaBloc>().add(GetTriviaForConcreteNumber('12'));
+   // BlocProvider.of<NumberTriviaBloc>(context).add(GetTriviaForRandomNumber());
   }
 }

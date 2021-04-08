@@ -29,10 +29,12 @@ class NumberTriviaRemoteDataSourceImpl implements NumberTriviaRemoteDataSource {
     print("Url ::: $url");
     final response = await client
         .get(Uri.parse(url), headers: {'Content-Type': 'application/json'});
-
+    print('Response $response');
     if (response.statusCode == 200) {
+      print("Success");
       return NumberTriviaModel.fromJson(json.decode(response.body));
     } else {
+      print("Failed");
       throw ServerExecption();
     }
   }

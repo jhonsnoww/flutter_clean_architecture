@@ -4,7 +4,7 @@ abstract class NumberTriviaState extends Equatable {
   const NumberTriviaState();
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [Empty, Loading, Loaded, Error];
 }
 
 class Empty extends NumberTriviaState {}
